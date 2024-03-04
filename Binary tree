@@ -1,0 +1,126 @@
+//По набору ключей постройте бинарное поисковое дерево. 
+//Удалите из него ключ (правым удалением), если он есть в дереве. 
+//Выполните прямой левый обход полученного дерева.
+
+#include<iostream>
+#include <fstream>
+
+std::ofstream out("output.txt");
+class Node {
+public:
+	int key;
+	Node* left;
+	Node* right;
+	Node(int x) :
+		key(x),
+		left(0),
+		right(0) {
+	}
+};
+class Tree {
+public:	Node* root;
+
+	  Tree() : root(0) {};
+	  ~Tree() {
+		  DestroyNode(root);
+	  }
+	  static void DestroyNode(Node* node) {
+		  if (node) {
+			  DestroyNode(node->left);
+			  DestroyNode(node->right);
+			  delete node;
+		  }
+	  }
+
+
+	  Node* delete_key(Node* v, int x) {
+		  if (v == NULL) {
+			  return NULL;
+		  }
+		  /*if (x = v->key) {
+			  if (v->left == NULL && v->right != NULL) {
+
+			  }
+			  if (v->left != NULL && v->right == NULL) {
+
+			  }
+		  }*/
+		  if (x < v->key) {
+			  v->left = delete_key(v->left, x);
+			  return v;
+		  }
+		  else if (x > v->key) {
+			  v->right = delete_key(v->right, x);
+			  return v;
+		  }
+
+		  if (v->left == NULL) {
+			  return v->right;
+		  }
+		  else if (v->right == NULL) {
+			  return v->left;
+		  }
+		  else {
+			  int min_key = find_min(v->right)->key;
+			  v->key = min_key;
+			  v->right = delete_key(v->right, min_key);
+			  return v;
+		  }
+	  }
+
+	  Node* find_min(Node* v) {
+		  if (v->left != NULL) {
+			  return find_min(v->left);
+		  }
+		  else {
+			  return v;
+		  }
+	  }
+
+
+	  void insert(int x) {
+		  Node** cur = &root;
+		  while (*cur) {
+			  Node& node = **cur;
+			  if (x < node.key) {
+				  cur = &node.left;
+			  }
+			  else if (x > node.key) {
+				  cur = &node.right;
+			  }
+			  else {
+				  return;
+			  }
+		  }
+		  *cur = new Node(x);
+	  }
+	  void print(Node* node) {
+		  if (node != NULL) {
+			  out << node->key << std::endl;
+			  print(node->left);
+			  print(node->right);
+		  }
+	  }
+};
+int main() {
+	std::ifstream in("input.txt");
+	int x;
+	int key;
+	in >> key;
+
+	Tree a;
+	in >> x;
+	Node* node = new Node(x);
+	a.root = node;
+	Node* root = node;
+	while (in.is_open() && !in.eof()) {
+		in >> x;
+		node = new Node(x);
+		a.insert(x);
+	}
+	in.close();
+	a.root = a.delete_key(a.root, key);
+
+	a.print(a.root);
+	out.close();
+}
