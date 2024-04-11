@@ -3,12 +3,16 @@
 #include<iostream>
 #include <fstream>
 
-long long K = 0;				// �������� �����
-long long dl;					// ����� ����
-long long mn_dl = LLONG_MAX;	//����� ����� ����
-long long mx_h = 0;				// ���� ������
-long long ves = 0;				// ����� ��� ����
-long long mn_ves = LLONG_MAX;	// ���� ���
+long long K = 0;				// çíà÷åíèå êëþ÷à
+long long dl;					// äëèíà ïóòè
+long long mn_dl = LLONG_MAX;	//ìèíèì äëèíà ïóòè
+long long mx_h = 0;				// ìàêñ âûñîòà
+long long ves = 0;				// ìèíèì âåñ ïóòè
+long long mn_ves = LLONG_MAX;	// ìèíì âåñ
+
+//Среди полупутей минимальной положительной длины между листь­ями выбрать тот, у которого сумма ключей вершин минимальна. 
+//Если такой полупуть существует, то удалить (правым удалением) центральную вершину этого полупути. 
+//Если решение неоднозначно, то выбирать такой минимальный полупуть между листьями, корневая вершина которого имеет минимальное ключевое значение.
 
 std::ofstream out("output.txt");
 std::ifstream in("input.txt");
@@ -18,9 +22,9 @@ public:
 	int key;
 	Node* left;
 	Node* right;
-	long long h;					//������
-	long long velichina;			//�����? ��� ����
-	long long ne_h;					//���������� ����� �� �����
+	long long h;					//âûñîòà
+	long long velichina;			//ìàññà? ìèí ïóòè
+	long long ne_h;					//ðàññòîÿíèå ìèíèì äî ëèñòà
 	Node(long long x) :
 		key(x),
 		left(0),
@@ -144,7 +148,7 @@ public:	Node* root;
 				  node->h = std::max(node->left->ne_h, node->right->ne_h) + 1;
 
 				  dl = node->left->ne_h + node->right->ne_h + 3;
-				  ves = node->left->velichina + node->right->velichina + node->velichina;			//��� ����� ����
+				  ves = node->left->velichina + node->right->velichina + node->velichina;			//âåñ âñåãî ïóòè
 
 				  if (mn_dl > dl) {
 					  mn_dl = dl;
