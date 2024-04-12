@@ -3,7 +3,7 @@
 #include<iostream>
 #include <fstream>
 
-long long K = 0;				// çíà÷åíèå êëþ÷à
+long long K = LLONG_MIN;				// çíà÷åíèå êëþ÷à
 long long dl;					// äëèíà ïóòè
 long long mn_dl = LLONG_MAX;	//ìèíèì äëèíà ïóòè
 long long mx_h = 0;				// ìàêñ âûñîòà
